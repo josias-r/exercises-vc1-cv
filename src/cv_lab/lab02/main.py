@@ -53,3 +53,29 @@ cv2.imwrite(f"{script_dir}/a02/moon_lp.png", moon_lp)
 
 earoon = np.clip(earth_hp.astype(np.float32) + moon_lp.astype(np.float32), 0, 255).astype(np.uint8)
 cv2.imwrite(f"{script_dir}/a02/earoon.png", earoon)
+
+# A3
+coin = cv2.imread(f"{script_dir}/a03/coin.jpeg")
+scale = 0.25
+coin_sm = cv2.resize(coin, dsize=None, fx=scale, fy=scale)
+coin_gray = cv2.cvtColor(coin_sm, cv2.COLOR_BGR2GRAY)
+ddepth = cv2.CV_16S
+
+# 1. Basic Gradient Filters (Sobel and Laplacian)
+coin_x = cv2.Sobel(coin_gray, ddepth, 1, 0, ksize=3)
+coin_y = cv2.Sobel(coin_gray, ddepth, 0, 1, ksize=3)
+coin_laplacian = cv2.Laplacian(coin_gray, ddepth, ksize=3)
+
+abs_x = cv2.convertScaleAbs(coin_x)
+abs_y = cv2.convertScaleAbs(coin_y)
+abs_laplacian = cv2.convertScaleAbs(coin_laplacian)
+
+cv2.imwrite(f"{script_dir}/a03/sobel_x.png", abs_x)
+cv2.imwrite(f"{script_dir}/a03/sobel_y.png", abs_y)
+cv2.imwrite(f"{script_dir}/a03/laplacian.png", abs_laplacian)
+
+# 2. Canny Edge Detector
+coin_blurred = cv2.GaussianBlur(coin_gray, (5, 5), 0)
+edges_canny = cv2.Canny(coin_blurred, 100, 200)
+
+cv2.imwrite(f"{script_dir}/a03/canny.png", edges_canny)
