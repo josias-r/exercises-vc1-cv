@@ -138,3 +138,11 @@ edges_canny = cv2.Canny(coin_blurred, 100, 200)
 
 cv2.imwrite(f"{script_dir}/a03/canny.png", edges_canny)
 ```
+
+= Reflection
+
+#box(width: 18cm)[
+  These exercises really showed me how filters directly mess with image frequencies. Blurs (low-pass) keep broad shapes but kill sharp details, while gradients (high-pass) strip away the smooth areas to leave only the edges.
+
+  There is always a trade-off between reducing noise and keeping things sharp. Selectively filtering (like my median trick in A1) fixes noise without blurring the whole picture. Otherwise, Canny (A3) handles the trade-off well -> it blurs the noise away first, then thins the lines back down so the structure stays crisp.
+]
