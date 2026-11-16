@@ -49,4 +49,40 @@ lena_filtered = cv2.merge(
 cv2.imwrite(f"{script_dir}/lena_filtered.png", lena_filtered)
 ```
 
-== A2
+= A2
+
+#box(width: 18cm)[
+  I played around with different blur sizes etc. i ended up with box blur of 20x20 (images are 330x330) and used that same lp to get hp of earth.
+
+  The effect works good enough for me. When unfocusing my eyes i blur the "high frequencies" of what i see only leaving the moon picture (since the high earth frequencies are only faint then)
+]
+
+#grid(
+  columns: 2,
+  image("a02/earoon.png", width: 8cm),
+  block(width: 8cm)[
+    #grid(
+      columns: 2,
+      image("a02/earth.png"), image("a02/moon.png"),
+      image("a02/earth_hp.png"), image("a02/moon_lp.png"),
+    )],
+)
+
+```python
+earth = cv2.imread(f"{script_dir}/a02/earth.png")
+moon = cv2.imread(f"{script_dir}/a02/moon.png")
+
+kernel_box = np.ones((20, 20))
+kernel_box = kernel_box / (kernel_box.shape[0] ** 2)
+
+earth_lp = cv2.filter2D(earth, ddepth=-1, kernel=kernel_box)
+earth_hp = np.clip(earth.astype(np.float32) - earth_lp.astype(np.float32), 0, 255).astype(np.uint8)
+
+moon_lp = cv2.filter2D(moon, ddepth=-1, kernel=kernel_box)
+
+cv2.imwrite(f"{script_dir}/a02/earth_hp.png", earth_hp)
+cv2.imwrite(f"{script_dir}/a02/moon_lp.png", moon_lp)
+
+earoon = np.clip(earth_hp.astype(np.float32) + moon_lp.astype(np.float32), 0, 255).astype(np.uint8)
+cv2.imwrite(f"{script_dir}/a02/earoon.png", earoon)
+```
