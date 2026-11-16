@@ -6,6 +6,8 @@
 
 #box(width: 18cm)[
   I applied a simple median filter but ONLY for full black or full white pixels to preserve sharpness of the image, but still remove the salt and pepper noise. The filter is applied to each channel of the image separately.
+
+  Small window size of 3x3 seems to be the smart choice for this task to keep changes minimal locally.
 ]
 
 #stack(dir: ltr, image("lena_filtered.png"), image("lena_noise.png"))
@@ -46,3 +48,5 @@ lena_filtered = cv2.merge(
 
 cv2.imwrite(f"{script_dir}/lena_filtered.png", lena_filtered)
 ```
+
+== A2
